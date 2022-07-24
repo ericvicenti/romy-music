@@ -1,20 +1,72 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { Text, View } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Slidey from "./Slidey";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import createSlideyTabNavigator from "./createSlideyTabNavigator";
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+function HomeStack() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function HomeScreen() {
+  const { navigate } = useNavigation();
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Home!</Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function ProfileScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Profile!</Text>
+    </View>
+  );
+}
+
+function ComingSoonScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Coming Soon!</Text>
+    </View>
+  );
+}
+
+const Tab = createSlideyTabNavigator();
+
+function AppNav() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Explore"
+          component={HomeStack}
+          options={{ header: () => null }}
+        />
+        <Tab.Screen name="Trending" component={ComingSoonScreen} />
+        <Tab.Screen name="Search" component={ComingSoonScreen} />
+        <Tab.Screen name="Library" component={ComingSoonScreen} />
+        <Tab.Screen name="Settings" component={ComingSoonScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      {/* <AppNav /> */}
+      <Slidey />
+    </SafeAreaProvider>
+  );
+}
